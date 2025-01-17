@@ -36,6 +36,12 @@ def mongraphique():
 def new_graphiquecolonne():
     return render_template("graphiquecolonne.html") 
 
+@app.route("/commits/")
+def commits():
+    return render_template("commits.html")
+
+
+
 
 
 
