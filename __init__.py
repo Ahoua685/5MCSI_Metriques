@@ -35,6 +35,8 @@ def mongraphique():
 @app.route("/histogramme/")
 def new_graphiquecolonne():
     return render_template("graphiquecolonne.html")
+
+
   
   
 if __name__ == "__main__":
