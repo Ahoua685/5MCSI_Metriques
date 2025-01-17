@@ -40,6 +40,10 @@ def histogramme():
 def commits():
     return render_template("commits.html")
 
+@app.route("/histogramme_commits/")
+def histogramme_commits():
+    return render_template("histogramme_commits.html") 
+
 
 
 
