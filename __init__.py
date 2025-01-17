@@ -33,8 +33,8 @@ def mongraphique():
     return render_template("graphique.html")
 
 @app.route("/histogramme/")
-def new_graphiquecolonne():
-    return render_template("graphiquecolonne.html") 
+def histogramme():
+    return render_template("histogramme.html") 
 
 @app.route("/commits/")
 def commits():
