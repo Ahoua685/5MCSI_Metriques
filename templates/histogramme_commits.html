@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Graphique des Commits par Minute</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  </head>
+  <body>
+    <div id="chart_div"></div>
+    <script>
+      google.charts.load('current', { packages: ['corechart', 'bar'] });
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        // Récupération des commits via l'API GitHub
+        fetch('https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits')
+          .then(response => response.json())
+          .then(commits => {
+            const commitCounts = {};
+            
+            // Extraire la date et l'heure de chaque commit
+            commits.forEach(commit => {
+              const date = new Date(commit.commit.author.date); // Date du commit
+              const minute = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+              
+              // Comptabiliser les commits par minute
+              commitCounts[minute] = (commitCounts[minute] || 0) + 1;
+            });
+
+            // Transformer les données pour le graphique
+            const dataArray = [['Minute', 'Commits']];
+            for (let minute in commitCounts) {
+              dataArray.push([minute, commitCounts[minute]]);
+            }
+
+            // Créer le graphique
+            const data = google.visualization.arrayToDataTable(dataArray);
+            const options = {
+              title: 'Nombre de commits par minute',
+              chartArea: { width: '60%' },
+              hAxis: { title: 'Minute', slantedText: true, slantedTextAngle: 45 },
+              vAxis: { title: 'Nombre de commits' },
+              legend: { position: 'none' },
+              bars: 'vertical', // Utilisation d'un graphique à colonnes verticales
+            };
+
+            const chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+          })
+          .catch(error => console.log(error));
+      }
+    </script>
+  </body>
+</html>
